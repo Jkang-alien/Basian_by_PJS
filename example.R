@@ -20,7 +20,7 @@ Nsub <- length(s)
 f <- sample(seq(0.1, 0.2, by = 0.01), length(x), replace = TRUE)
 r <- (log2(x/mean(x)))
 
-mydata <- list(r = r, f = f, N=length(r), s = l, Nsub = Nsub, psy = mean(x)/100)
+mydata <- list(r = r, f = f, N=length(r), s = l, Nsub = Nsub, psi = mean(x)/100)
 
 code <- '
 data {
@@ -29,18 +29,18 @@ data {
   real f[N];
   int<lower=1> Nsub;
   int<lower=1> s[N];
-  real psy;
+  real psi;
 }
 parameters {
-  real<lower=0.1, upper=20> cn[Nsub];
-  real<lower=0, upper=5> m[Nsub];
-  real<lower=0> sigma_cn[Nsub];
-  real<lower=0> sigma_m[Nsub];
+  vector<lower=0.1, upper=20>[Nsub] cn;
+  vector<lower=0>[Nsub] sigma_cn;
+  vector<lower=0, upper=5>[Nsub] m;
+  vector<lower=0>[Nsub] sigma_m;
   real<lower=0, upper=1.0> P;
 }
 model {
   for(i in 1:N){
-  r[i] ~ normal(log2((P*cn[s[i]] + 2*(1-P))/(P*psy + 2*(1-P))),sigma_cn[s[i]]);
+  r[i] ~ normal(log2((P*cn[s[i]] + 2*(1-P))/(P*psi + 2*(1-P))),sigma_cn[s[i]]);
   f[i] ~ normal((P*m[s[i]]+1-P)/(P*cn[s[i]]+2*(1-P)), sigma_m[s[i]]);
   }
 }
