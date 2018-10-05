@@ -17,7 +17,8 @@ for (i in 1:length(s)) {
 }
 
 Nsub <- length(s)
-f <- sample(seq(0.1, 0.2, by = 0.01), length(x), replace = TRUE)
+f <- sample(seq(0.2, 0.5, by = 0.1), length(x),
+            prob = c(0.1, 0.1, 0.9, 0.9), replace = TRUE)
 r <- (log2(x/mean(x)))
 
 mydata <- list(r = r, f = f, N=length(r), s = l, Nsub = Nsub, psi = mean(x)/100)
@@ -29,7 +30,6 @@ data {
   real f[N];
   int<lower=1> Nsub;
   int<lower=1> s[N];
-  real psi;
 }
 parameters {
   vector<lower=0.1, upper=20>[Nsub] cn;
@@ -37,6 +37,10 @@ parameters {
   vector<lower=0, upper=5>[Nsub] m;
   vector<lower=0>[Nsub] sigma_m;
   real<lower=0, upper=1.0> P;
+}
+transformed parameters {
+  real psi;
+  psi = mean(cn);
 }
 model {
   for(i in 1:N){
