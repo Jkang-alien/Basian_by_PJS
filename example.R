@@ -18,7 +18,7 @@ for (i in 1:length(s)) {
 
 Nsub <- length(s)
 f <- sample(seq(0.2, 0.5, by = 0.1), length(x),
-            prob = c(0.1, 0.1, 0.9, 0.9), replace = TRUE)
+            prob = c(0.1, 0.1, 0.1, 0.9), replace = TRUE)
 r <- (log2(x/mean(x)))
 
 mydata <- list(r = r, f = f, N=length(r), s = l, Nsub = Nsub, psi = mean(x)/100)
@@ -32,14 +32,22 @@ data {
   int<lower=1> s[N];
 }
 parameters {
-  vector<lower=0.1, upper=20>[Nsub] cn;
+  real<lower=0.1, upper=10> cn[Nsub];
+  real<lower=0.1, upper=cn> m[Nsub];
   vector<lower=0>[Nsub] sigma_cn;
-  vector<lower=0, upper=5>[Nsub] m;
   vector<lower=0>[Nsub] sigma_m;
   real<lower=0, upper=1.0> P;
 }
 transformed parameters {
+  //real alpha[Nsub];
+  //real m[Nsub];
   real psi;
+  //for (i in 1:Nsub){
+  //alpha = cn/2;
+  //}
+  //for (i in 1:Nsub){
+  //m[i]<lower=0, upper=alpha[i]> = m[i];
+  //}
   psi = mean(cn);
 }
 model {
@@ -50,11 +58,12 @@ model {
 }
 '
 
-fit <- stan(model_code = code, data = mydata, iter = 1000, 
+fit <- stan(model_code = code, data = mydata, iter = 100, 
             chains = 2, control = list(adapt_delta = 0.99,
                                        max_treedepth = 15))
 
 plot(fit, pars = 'cn')
+plot(fit, pars = 'm')
 
 traceplot(fit, pars = 'cn')
 
