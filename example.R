@@ -1,5 +1,7 @@
+## ----- library ------------
 library(rstan)
 
+## ------ data_gen ----------
 x <- c()
 s <- c()
 b <- c()
@@ -9,7 +11,6 @@ for (i in 1:20){
   b <- sample((v-20):(v+20), 10, rep = TRUE)
   x <- append(x, b)
 }
-
 
 l =c()
 for (i in 1:length(s)) {
@@ -33,6 +34,8 @@ r <- (log2(x/mean(x)))
 
 mydata <- list(r = r, f = f, N=length(r), s = l, Nsub = Nsub, psi = mean(x)/100)
 
+
+## ------- code ----------------
 code <- '
 data {
   int N;
@@ -63,20 +66,28 @@ model {
   }
 }
 '
+
+## ------------ fit -------------------
 fit <- stan(model_code = code, data = mydata, iter = 1000, 
             chains = 2, control = list(adapt_delta = 0.99,
                                        max_treedepth = 12))
 
+## ------------ cn --------------------
+
 plot(fit, pars = 'cn')
+
+##------------ m ---------------------
 plot(fit, pars = 'm')
 
+##------------ trace -----------------
 traceplot(fit, pars = 'cn')
 
+##------------ diag ------------------
 stan_diag(fit)
+
+##------------ tumor_purity-----------
 post <- extract(fit)
 
 hist(post$P,
      main = paste("Tumor purity"),
      ylab = '')
-
-s/100
