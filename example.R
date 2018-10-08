@@ -69,23 +69,23 @@ model {
 
 ## ------------ fit -------------------
 fit <- stan(model_code = code, data = mydata, iter = 1000, 
-            chains = 2, control = list(adapt_delta = 0.99,
-                                       max_treedepth = 12))
+            chains = 2, control = list(adapt_delta = 0.9,
+                                       max_treedepth = 5))
 
 ## ------------ cn --------------------
 
 plot(fit, pars = 'cn')
 
-##------------ m ---------------------
+## ------------ m ---------------------
 plot(fit, pars = 'm')
 
-##------------ trace -----------------
+## ------------ trace -----------------
 traceplot(fit, pars = 'cn')
 
-##------------ diag ------------------
+## ------------ diag ------------------
 stan_diag(fit)
 
-##------------ tumor_purity-----------
+## ------------ tumor_purity-----------
 post <- extract(fit)
 
 hist(post$P,

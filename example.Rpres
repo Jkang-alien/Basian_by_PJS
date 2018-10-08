@@ -34,42 +34,40 @@ Stan code
 
 Fit
 =======================================================
-```{r}
+```{r, message=FALSE, warning=FALSE, include=FALSE, cache=TRUE}
 <<fit>>
 ```
 
-Slide With Plot
+Posterior of copy number
 ========================================================
 ```{r}
-plot(fit, pars = 'cn')
+<<cn>>
 ```
 
-Slide With Plot
+Posterior of minor allele copy number
 ========================================================
 ```{r}
-plot(fit, pars = 'm')
+<<m>>
 ```
 
-Slide With Plot
+Posterior of tumor purity
 ========================================================
 ```{r}
-traceplot(fit, pars = 'cn')
+<<tumor_purity>>
 ```
 
-Slide With Plot
+Trace Plot
 ========================================================
 ```{r}
-stan_diag(fit)
+<<trace>>
 ```
 
-Slide With Plot
+Diagnostic Plot
 ========================================================
 ```{r}
-post <- extract(fit)
-
-hist(post$P,
-     main = paste("Tumor purity"),
-     ylab = '')
+<<diag>>
 ```
+
+
 
 
