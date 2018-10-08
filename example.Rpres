@@ -3,29 +3,57 @@ Bayesian
 author: Jun Kang
 date: October 8, 2018
 autosize: true
+
+Three steps of Bayesian data analysis
+=======================================================
+
+
 ```{r, message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
 library(knitr)
 read_chunk("example.R")
 ```
 
+- Full probability model
+- Conditioning on obsereved data (posterior distribution)
+- Evaluating the fit of the model and the implications of the resulting posterior distribution
+
+Bayesian Data Analysis 3rd, Andrew Gelman et. al.
 
 Copy number and tumor purity estimation
 ========================================================
 
 A computational approach to distinguish somatic vs. germline origin of genomic alterations from deep sequencing of cancer specimens without a matched normal <https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005965>.
 
--  Foundation Medicine
-- Bullet 3
+Full probability model
+============================================
 
-```{r}
+```{r, echo=FALSE}
 <<library>>
 ```
 $$
 \begin{aligned}
- Y & \sim & N\left(log_2 \frac{pC_i+2(1-p)}{p* \psi+2(1-p)}, \sigma_{ri} \right)
+ r_i & \sim & N\left(log_2 \frac{pC_i+2(1-p)}{p \psi+2(1-p)}, \sigma_{ri} \right)
 \end{aligned}
 $$
 
+$$
+\begin{aligned}
+ f_i & \sim & N\left(\frac{pM_i+(1-p)}{pC_i+2(1-p)}, \sigma_{fi} \right)
+\end{aligned}
+$$
+
+$$
+\psi = \frac{\sum_{i}(l_iC_i) }{\sum_{i}(l_i)} \
+$$
+
+\(\\r_i\\): Median-normalized log-ratio coverage of all exons within \(\\S_i\\) <br>
+\(\\f_i\\): MAF of SNPs within segment \(\\S_i\\) <br>
+\(\\p\\): Pumor purity <br>
+\(\\S_i\\): Genomic segment <br>
+\(\\l_i\\): Length of \(\\S_i\\) <br>
+\(\\C_i\\): Copy number of \(\\S_i\\) <br>
+\(\\M_i\\): Copy number of minor alleles in \(\\S_i\\), \(\\0 \leq M_i \leq S_i\\) <br>
+\(\psi\): Tumor ploidy of the sample
 
 ```{r, echo=FALSE, cache=TRUE}
 <<data_gen>>
@@ -39,7 +67,7 @@ Stan code
 
 Fit
 =======================================================
-```{r, message=FALSE, warning=FALSE, include=FALSE, cache=TRUE}
+```{r, echo=TRUE, message=FALSE, warning=FALSE, include=FALSE, cache=TRUE}
 <<fit>>
 ```
 
