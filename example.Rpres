@@ -1,0 +1,75 @@
+Bayesian
+========================================================
+author: Jun Kang
+date: October 8, 2018
+autosize: true
+```{r, message=FALSE, warning=FALSE, include=FALSE, echo=FALSE}
+library(knitr)
+read_chunk("example.R")
+```
+
+
+Copy number and tumor purity estimation
+========================================================
+
+A computational approach to distinguish somatic vs. germline origin of genomic alterations from deep sequencing of cancer specimens without a matched normal <https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005965>.
+
+-  Foundation Medicine
+- Bullet 2
+- Bullet 3
+
+```{r}
+<<library>>
+```
+
+```{r, echo=FALSE, cache=TRUE}
+<<data_gen>>
+```
+
+Stan code
+=======================================================
+```{r}
+<<code>>
+```
+
+Fit
+=======================================================
+```{r}
+<<fit>>
+```
+
+Slide With Plot
+========================================================
+```{r}
+plot(fit, pars = 'cn')
+```
+
+Slide With Plot
+========================================================
+```{r}
+plot(fit, pars = 'm')
+```
+
+Slide With Plot
+========================================================
+```{r}
+traceplot(fit, pars = 'cn')
+```
+
+Slide With Plot
+========================================================
+```{r}
+stan_diag(fit)
+```
+
+Slide With Plot
+========================================================
+```{r}
+post <- extract(fit)
+
+hist(post$P,
+     main = paste("Tumor purity"),
+     ylab = '')
+```
+
+
