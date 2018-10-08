@@ -1,1 +1,1 @@
-This is simulation of stan sampling for copy number estimation using NGS data (ie. read depth and minor allele freaquency).
+This is simulation of stan sampling for copy number estimation using NGS data (ie. read depth and minor allele freaquency). This follows the modeling of this article "A computational approach to distinguish somatic vs. germline origin of genomic alterations from deep sequencing of cancer specimens without a matched normal" (<https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005965>)

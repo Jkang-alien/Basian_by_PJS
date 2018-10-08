@@ -15,12 +15,17 @@ Copy number and tumor purity estimation
 A computational approach to distinguish somatic vs. germline origin of genomic alterations from deep sequencing of cancer specimens without a matched normal <https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005965>.
 
 -  Foundation Medicine
-- Bullet 2
 - Bullet 3
 
 ```{r}
 <<library>>
 ```
+$$
+\begin{aligned}
+ Y & \sim & N\left(log_2 \frac{pC_i+2(1-p)}{p* \psi+2(1-p)}, \sigma_{ri} \right)
+\end{aligned}
+$$
+
 
 ```{r, echo=FALSE, cache=TRUE}
 <<data_gen>>
