@@ -66,6 +66,39 @@ model {
   }
 }
 '
+## ------------ code1 ----------------
+'data {
+  int N;
+  real r[N];
+  real f[N];
+  int<lower=1> Nsub;
+  int<lower=1> s[N];
+}'
+
+## ------------ code2 ----------------
+'parameters {
+  real<lower=0.1, upper=10> cn[Nsub];
+  real m_logit[Nsub];
+  vector<lower=0>[Nsub] sigma_cn;
+  vector<lower=0>[Nsub] sigma_m;
+  real<lower=0, upper=1.0> P;
+}
+transformed parameters {
+  real m[Nsub];
+  real psi;
+  for (i in 1:Nsub){
+    m[i] = (0+(cn[i]/2-0)*inv_logit(m_logit[i])); //log jacobian determinant stan constraints transformation
+  }
+  psi = mean(cn);
+}'
+
+## -------------- code3 ------------------
+'model {
+  for(i in 1:N){
+  r[i] ~ normal(log2((P*cn[s[i]] + 2*(1-P))/(P*psi + 2*(1-P))),sigma_cn[s[i]]);
+  f[i] ~ normal((P*m[s[i]]+1-P)/(P*cn[s[i]]+2*(1-P)), sigma_m[s[i]]);
+  }
+}'
 
 ## ------------ fit -------------------
 fit <- stan(model_code = code, data = mydata, iter = 1000, 
